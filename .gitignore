@@ -1,0 +1,19 @@
+# large amount of data
+additional-resources
+
+# IntelliJ IDEA
+.idea
+
+# sbt
+project/project
+project/target
+target
+
+# Bloop
+.bloop
+.bsp
+
+# Other
+.cache
+*.class
+*.log
