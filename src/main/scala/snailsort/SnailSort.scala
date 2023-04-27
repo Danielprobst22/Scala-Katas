@@ -1,4 +1,6 @@
-import Direction.{MoveRight, nextPositionInDirection, nextPositionWithNextDirectionAndNewLimits}
+package snailsort
+
+import snailsort.Direction.*
 
 import scala.annotation.tailrec
 
@@ -11,10 +13,10 @@ object SnailSort {
     @tailrec
     def iterate(position: Position, direction: Direction, limits: Limits, accumulated: Vector[Int]): Vector[Int] = {
       val result = accumulated.appended(values(position.row)(position.column))
-      nextPositionInDirection(position, direction, limits) match {
+      direction.nextPositionInDirection(position, limits) match {
         case Some(nextPosition) => iterate(nextPosition, direction, limits, result)
         case None =>
-          nextPositionWithNextDirectionAndNewLimits(position, direction, limits) match {
+          direction.nextPositionWithNextDirectionAndNewLimits(position, limits) match {
             case Some(nextPosition, nextDirection, newLimits) => iterate(nextPosition, nextDirection, newLimits, result)
             case None => result
           }
@@ -76,23 +78,21 @@ enum Direction {
   case MoveDown
   case MoveLeft
   case MoveUp
-}
 
-object Direction {
-  def nextPositionInDirection(position: Position, direction: Direction, limits: Limits): Option[Position] = direction match {
+  def nextPositionInDirection(position: Position, limits: Limits): Option[Position] = this match {
     case MoveRight => Option.when(position.column < limits.right)(position.moveRight)
     case MoveDown => Option.when(position.row < limits.bottom)(position.moveDown)
     case MoveLeft => Option.when(position.column > limits.left)(position.moveLeft)
     case MoveUp => Option.when(position.row > limits.top)(position.moveUp)
   }
 
-  def nextPositionWithNextDirectionAndNewLimits(position: Position, direction: Direction, limits: Limits): Option[(Position, Direction, Limits)] = {
-    val (nextDirection, newLimits) = nextDirectionWithNewLimits(direction, limits)
-    nextPositionInDirection(position, nextDirection, newLimits)
+  def nextPositionWithNextDirectionAndNewLimits(position: Position, limits: Limits): Option[(Position, Direction, Limits)] = {
+    val (nextDirection, newLimits) = nextDirectionWithNewLimits(limits)
+    nextDirection.nextPositionInDirection(position, newLimits)
       .map(nextPosition => (nextPosition, nextDirection, newLimits))
   }
 
-  private def nextDirectionWithNewLimits(direction: Direction, limits: Limits): (Direction, Limits) = direction match {
+  private def nextDirectionWithNewLimits(limits: Limits): (Direction, Limits) = this match {
     case MoveRight => (MoveDown, limits.shrinkTop)
     case MoveDown => (MoveLeft, limits.shrinkRight)
     case MoveLeft => (MoveUp, limits.shrinkBottom)
