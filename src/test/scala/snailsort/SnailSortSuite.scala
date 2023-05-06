@@ -2,7 +2,7 @@ package snailsort
 
 import org.scalatest.EitherValues
 import org.scalatest.funsuite.AnyFunSuite
-import org.scalatest.matchers.should.*
+import org.scalatest.matchers.should.Matchers
 import snailsort.SnailSort.snailSort
 
 class SnailSortSuite extends AnyFunSuite with Matchers with EitherValues {

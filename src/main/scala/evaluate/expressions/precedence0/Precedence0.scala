@@ -1,0 +1,5 @@
+package evaluate.expressions.precedence0
+
+import evaluate.expressions.precedence1.Precedence1AndHigher
+
+trait Precedence0 extends Precedence1AndHigher
