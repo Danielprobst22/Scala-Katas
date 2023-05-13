@@ -2,7 +2,7 @@ package evaluate
 
 import evaluate.errors.{IllegalSymbolError, SyntaxError}
 import evaluate.expressions.Expression
-import zio.prelude.{NonEmptyList, Validation, ZValidation}
+import zio.prelude.{NonEmptyForEachOps, Validation}
 
 sealed trait Symbol {
   def character: Char
@@ -14,7 +14,7 @@ object Symbol {
   def parse(expression: String): Either[IllegalSymbolError, List[SymbolWithIndex]] = {
     Validation.validateAll(parseAndValidate(expression))
       .toEither
-      .left.map(indexes => IllegalSymbolError(NonEmptyList.fromNonEmptyChunk(indexes)))
+      .left.map(indexes => IllegalSymbolError(indexes.toNonEmptyList))
   }
 
   private def parseAndValidate(expression: String): List[Validation[Index, SymbolWithIndex]] = {
