@@ -4,7 +4,7 @@ ThisBuild / scalaVersion := "3.3.0"
 
 val zioPreludeVersion = "1.0.0-RC19"
 val oxVersion = "0.3.1"
-val scalatestVersion = "3.2.15"
+val scalatestVersion = "3.2.18"
 
 libraryDependencies ++= Seq(
   "dev.zio" %% "zio-prelude" % zioPreludeVersion,
